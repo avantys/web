@@ -2,25 +2,34 @@
 import SEO from '../components/common/SEO.astro';
 import '../styles/global.css';
 
-export interface Props {
+interface Props {
   title: string;
-  description?: string;
+  description: string;
+  canonical?: string;
   noindex?: boolean;
+  ogImage?: string;
+  twitterCard?: string;
 }
 
-const { title, description, noindex } = Astro.props as Props;
+const props = Astro.props as Props;
 ---
-<html lang="es">
+<html lang="es" class="no-js">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <SEO title={title} description={description} noindex={noindex} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    <SEO {...props} />
+    <script>document.documentElement.classList.replace('no-js','js');</script>
   </head>
   <body class="antialiased">
+    <a href="#main-content" class="skip-link">Ir al contenido</a>
     <header>
       <slot name="nav" />
     </header>
-    <main>
+    <main id="main-content">
       <slot />
     </main>
   </body>

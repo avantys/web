@@ -8,11 +8,12 @@ import tailwindConfig from './tailwind.config.js';
 // https://astro.build/config
 export default defineConfig({
   vite: {
-    plugins: [tailwindcss({ config: tailwindConfig })],
-    resolve: {
-      alias: {
-        '@': fileURLToPath(new URL('./src', import.meta.url))
+      // @ts-expect-error plugin lacks types for config option
+      plugins: [tailwindcss({ config: tailwindConfig })],
+      resolve: {
+        alias: {
+          '@': fileURLToPath(new URL('./src', import.meta.url))
+        }
       }
     }
-  }
-});
+  });
