@@ -1,36 +1,55 @@
 ---
 import MenuButton from './MenuButton.astro';
+
 interface CTA { href: string; label: string; icon?: string }
-interface MenuItem { label: string; columns: any[] }
+interface LinkItem { href: string; label: string; desc?: string }
+interface Column { title: string; items: LinkItem[] }
+interface MenuItem { label: string; columns: Column[] }
+
 interface Props {
   menu: MenuItem[];
   cta: CTA;
 }
+
 const { menu, cta } = Astro.props as Props;
 ---
-<nav id="meganav" class="bg-white">
+
+<nav id="meganav" class="bg-white" aria-label="Navegación principal">
   <div class="max-w-6xl mx-auto px-4 flex items-center justify-between h-16">
-    <a href="/" class="font-bold text-xl">Logo</a>
+    <a href="/" class="font-bold text-xl" aria-label="Inicio">Logo</a>
+
+    <!-- Botón móvil -->
     <MenuButton open={false} />
+
+    <!-- Desktop -->
     <div class="hidden lg:flex items-center gap-8 ml-8">
-      {menu.map((group, index) => (
-        <div class="relative" data-menu-item={index}>
-          <button class="py-2 px-3 font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500" aria-expanded="false">
+      {menu.map((group, _index) => (
+        <div class="relative" data-menu-item={_index}>
+          <button
+            class="py-2 px-3 font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            aria-expanded="false"
+            aria-haspopup="true"
+          >
             {group.label}
           </button>
+
           <div class="panel absolute left-1/2 -translate-x-1/2 mt-2 hidden w-screen max-w-6xl" role="menu">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-6 bg-white rounded-2xl shadow-xl ring-1 ring-black/5">
-              {group.columns.map(column => (
+              {group.columns.map((column) => (
                 <div>
                   <h3 class="text-sm font-semibold text-gray-900 mb-2">{column.title}</h3>
                   <ul class="space-y-2">
-                    {column.items.map(item => (
+                    {column.items.map((item) => (
                       <li>
-                        <a href={item.href} class="flex items-start gap-3 p-2 rounded-lg hover:bg-gray-50 focus:bg-gray-50 focus:outline-none" role="menuitem">
+                        <a
+                          href={item.href}
+                          class="flex items-start gap-3 p-2 rounded-lg hover:bg-gray-50 focus:bg-gray-50 focus:outline-none"
+                          role="menuitem"
+                        >
                           <svg class="h-5 w-5 text-gray-500" aria-hidden="true"></svg>
                           <div>
                             <p class="font-medium">{item.label}</p>
-                            <p class="text-sm text-gray-600">{item.desc}</p>
+                            {item.desc && <p class="text-sm text-gray-600">{item.desc}</p>}
                           </div>
                         </a>
                       </li>
@@ -42,26 +61,44 @@ const { menu, cta } = Astro.props as Props;
           </div>
         </div>
       ))}
-      <a href={cta.href} class="ml-4 inline-block bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">{cta.label}</a>
+      <a
+        href={cta.href}
+        class="ml-4 inline-block bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      >
+        {cta.label}
+      </a>
     </div>
   </div>
 
-  <div id="mobile-panel" class="fixed inset-0 z-50 bg-white overflow-y-auto transform -translate-x-full motion-safe:transition-transform motion-safe:duration-200 lg:hidden">
+  <!-- Móvil -->
+  <div
+    id="mobile-panel"
+    class="fixed inset-0 z-50 bg-white overflow-y-auto transform -translate-x-full transition-transform duration-200 lg:hidden"
+  >
     <div class="p-4 space-y-4">
-      {menu.map((group, index) => (
+      {menu.map((group) => (
         <div class="border-b">
-          <button class="accordion-btn w-full flex justify-between items-center py-4 font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500" aria-expanded="false">
+          <button
+            class="accordion-btn w-full flex justify-between items-center py-4 font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            aria-expanded="false"
+          >
             {group.label}
             <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
           </button>
           <div class="accordion-panel hidden pl-4 pb-4 space-y-2">
-            {group.columns.map(col => (
+            {group.columns.map((col) => (
               <div>
                 <h3 class="text-sm font-semibold text-gray-900 mt-2">{col.title}</h3>
                 <ul class="space-y-2">
-                  {col.items.map(item => (
+                  {col.items.map((item) => (
                     <li>
-                      <a href={item.href} class="block p-2 rounded-lg hover:bg-gray-50 focus:bg-gray-50 focus:outline-none" role="menuitem">{item.label}</a>
+                      <a
+                        href={item.href}
+                        class="block p-2 rounded-lg hover:bg-gray-50 focus:bg-gray-50 focus:outline-none"
+                        role="menuitem"
+                      >
+                        {item.label}
+                      </a>
                     </li>
                   ))}
                 </ul>
@@ -70,125 +107,169 @@ const { menu, cta } = Astro.props as Props;
           </div>
         </div>
       ))}
-      <a href={cta.href} class="block bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">{cta.label}</a>
+      <a
+        href={cta.href}
+        class="block bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      >
+        {cta.label}
+      </a>
     </div>
   </div>
 </nav>
-<script client:load>
+
+<script>
   const nav = document.getElementById('meganav');
-  const items = nav.querySelectorAll('[data-menu-item]');
-  let openIndex = -1;
-  let hoverTimeout;
-  function openMenu(i) {
-    if (openIndex === i) return;
-    closeMenu();
-    openIndex = i;
-    const wrap = items[i];
-    const btn = wrap.querySelector('button');
-    const panel = wrap.querySelector('.panel');
-    btn.setAttribute('aria-expanded', 'true');
-    panel.classList.remove('hidden');
-  }
-  function closeMenu() {
-    if (openIndex === -1) return;
-    const wrap = items[openIndex];
-    const btn = wrap.querySelector('button');
-    const panel = wrap.querySelector('.panel');
-    btn.setAttribute('aria-expanded', 'false');
-    panel.classList.add('hidden');
-    openIndex = -1;
-  }
-  items.forEach((wrap, idx) => {
-    const btn = wrap.querySelector('button');
-    const panel = wrap.querySelector('.panel');
-    btn.addEventListener('mouseenter', () => {
-      hoverTimeout = setTimeout(() => openMenu(idx), 150);
-    });
-    btn.addEventListener('mouseleave', () => clearTimeout(hoverTimeout));
-    wrap.addEventListener('mouseleave', () => closeMenu());
-    btn.addEventListener('click', () => {
-      if (openIndex === idx) closeMenu(); else openMenu(idx);
-    });
-    btn.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') { closeMenu(); btn.focus(); }
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        if (openIndex === idx) closeMenu(); else openMenu(idx);
+  if (!nav) {
+    // Si no existe el nodo (render condicional), salimos.
+    // Esto evita errores en páginas que no usen el componente.
+  } else {
+    const items = nav.querySelectorAll('[data-menu-item]');
+    let openIndex = -1;
+    let hoverTimeout;
+
+    function openMenu(i) {
+      if (openIndex === i) return;
+      closeMenu();
+      openIndex = i;
+      const wrap = items[i];
+      const btn = wrap.querySelector('button');
+      const panel = wrap.querySelector('.panel');
+      if (!btn || !panel) return;
+      btn.setAttribute('aria-expanded', 'true');
+      panel.classList.remove('hidden');
+    }
+
+    function closeMenu() {
+      if (openIndex === -1) return;
+      const wrap = items[openIndex];
+      const btn = wrap.querySelector('button');
+      const panel = wrap.querySelector('.panel');
+      if (btn && panel) {
+        btn.setAttribute('aria-expanded', 'false');
+        panel.classList.add('hidden');
       }
-      if (e.key === 'ArrowDown') {
-        openMenu(idx);
-        const first = panel.querySelector('[role="menuitem"]');
-        first && first.focus();
-      }
-    });
-  });
-  document.addEventListener('click', (e) => {
-    if (!nav.contains(e.target)) closeMenu();
-  });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeMenu();
-  });
-  nav.querySelectorAll('[role="menu"]').forEach(menu => {
-    const mItems = menu.querySelectorAll('[role="menuitem"]');
-    mItems.forEach((item, i) => {
-      item.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowDown') {
-          e.preventDefault();
-          mItems[(i + 1) % mItems.length].focus();
-        } else if (e.key === 'ArrowUp') {
-          e.preventDefault();
-          mItems[(i - 1 + mItems.length) % mItems.length].focus();
-        } else if (e.key === 'Escape') {
+      openIndex = -1;
+    }
+
+    items.forEach((wrap, idx) => {
+      const btn = wrap.querySelector('button');
+      const panel = wrap.querySelector('.panel');
+      if (!btn || !panel) return;
+
+      btn.addEventListener('mouseenter', () => {
+        hoverTimeout = setTimeout(() => openMenu(idx), 150);
+      });
+      btn.addEventListener('mouseleave', () => clearTimeout(hoverTimeout));
+      wrap.addEventListener('mouseleave', () => closeMenu());
+
+      btn.addEventListener('click', () => {
+        if (openIndex === idx) {
           closeMenu();
+        } else {
+          openMenu(idx);
+        }
+      });
+
+      btn.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeMenu();
+          btn.focus();
+        }
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          if (openIndex === idx) closeMenu(); else openMenu(idx);
+        }
+        if (e.key === 'ArrowDown') {
+          openMenu(idx);
+          const first = panel.querySelector('[role="menuitem"]');
+          if (first) first.focus();
         }
       });
     });
-  });
 
-  const menuButton = nav.querySelector('#menu-button');
-  const mobilePanel = document.getElementById('mobile-panel');
-  const focusableSelectors = 'a[href], button:not([disabled])';
-  let mobileOpen = false;
-  function openMobile() {
-    mobilePanel.classList.remove('-translate-x-full');
-    menuButton.setAttribute('aria-expanded', 'true');
-    mobileOpen = true;
-    const first = mobilePanel.querySelector(focusableSelectors);
-    first && first.focus();
-  }
-  function closeMobile() {
-    mobilePanel.classList.add('-translate-x-full');
-    menuButton.setAttribute('aria-expanded', 'false');
-    mobileOpen = false;
-    menuButton.focus();
-  }
-  menuButton.addEventListener('click', () => {
-    mobileOpen ? closeMobile() : openMobile();
-  });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && mobileOpen) {
-      closeMobile();
-    }
-  });
-  mobilePanel.addEventListener('keydown', (e) => {
-    if (e.key !== 'Tab' || !mobileOpen) return;
-    const focusables = mobilePanel.querySelectorAll(focusableSelectors);
-    const first = focusables[0];
-    const last = focusables[focusables.length - 1];
-    if (e.shiftKey && document.activeElement === first) {
-      e.preventDefault();
-      last.focus();
-    } else if (!e.shiftKey && document.activeElement === last) {
-      e.preventDefault();
-      first.focus();
-    }
-  });
-  mobilePanel.querySelectorAll('.accordion-btn').forEach(btn => {
-    const panel = btn.nextElementSibling;
-    btn.addEventListener('click', () => {
-      const expanded = btn.getAttribute('aria-expanded') === 'true';
-      btn.setAttribute('aria-expanded', String(!expanded));
-      panel.classList.toggle('hidden');
+    document.addEventListener('click', (e) => {
+      if (!nav.contains(e.target)) closeMenu();
     });
-  });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeMenu();
+    });
+
+    nav.querySelectorAll('[role="menu"]').forEach((menu) => {
+      const mItems = menu.querySelectorAll('[role="menuitem"]');
+      mItems.forEach((item, i) => {
+        item.addEventListener('keydown', (e) => {
+          if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            mItems[(i + 1) % mItems.length].focus();
+          } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            mItems[(i - 1 + mItems.length) % mItems.length].focus();
+          } else if (e.key === 'Escape') {
+            closeMenu();
+          }
+        });
+      });
+    });
+
+    const menuButton = nav.querySelector('#menu-button');
+    const mobilePanel = document.getElementById('mobile-panel');
+    const focusableSelectors = 'a[href], button:not([disabled])';
+    let mobileOpen = false;
+
+    function openMobile() {
+      if (!mobilePanel || !menuButton) return;
+      mobilePanel.classList.remove('-translate-x-full');
+      menuButton.setAttribute('aria-expanded', 'true');
+      mobileOpen = true;
+      const first = mobilePanel.querySelector(focusableSelectors);
+      if (first) first.focus();
+    }
+
+    function closeMobile() {
+      if (!mobilePanel || !menuButton) return;
+      mobilePanel.classList.add('-translate-x-full');
+      menuButton.setAttribute('aria-expanded', 'false');
+      mobileOpen = false;
+      menuButton.focus();
+    }
+
+    if (menuButton) {
+      menuButton.addEventListener('click', () => {
+        if (mobileOpen) closeMobile(); else openMobile();
+      });
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && mobileOpen) {
+        closeMobile();
+      }
+    });
+
+    if (mobilePanel) {
+      mobilePanel.addEventListener('keydown', (e) => {
+        if (e.key !== 'Tab' || !mobileOpen) return;
+        const focusables = mobilePanel.querySelectorAll(focusableSelectors);
+        if (focusables.length === 0) return;
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      });
+    }
+
+    mobilePanel?.querySelectorAll('.accordion-btn').forEach((btn) => {
+      const panel = btn.nextElementSibling;
+      btn.addEventListener('click', () => {
+        const expanded = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', String(!expanded));
+        panel?.classList.toggle('hidden');
+      });
+    });
+  }
 </script>
