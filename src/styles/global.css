@@ -1,1 +1,88 @@
 @import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: "Museo Sans", system-ui, sans-serif;
+    color: #002040;
+  }
+}
+
+@layer components {
+  .btn {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 32, 64, 0.1);
+    transition: background-color 0.2s, color 0.2s;
+  }
+  .btn-primary {
+    background-color: #002040;
+    color: #fff;
+  }
+  .btn-primary:hover {
+    background-color: #486581;
+  }
+  .btn-secondary {
+    background-color: #3C3C3C;
+    color: #fff;
+  }
+  .btn-secondary:hover {
+    background-color: #3C3C3CCC;
+  }
+  .btn-outline {
+    border: 2px solid #002040;
+    color: #002040;
+    background-color: transparent;
+  }
+  .btn-outline:hover {
+    background-color: #002040;
+    color: #fff;
+  }
+  .btn-comienza {
+    background-color: #1E7A3E;
+    color: #fff;
+  }
+  .btn-comienza:hover {
+    background-color: #0F5132;
+  }
+  .btn-crece {
+    background-color: #FB8038;
+    color: #fff;
+  }
+  .btn-crece:hover {
+    background-color: #E65100;
+  }
+  .btn-crea {
+    background-color: #2C70B1;
+    color: #fff;
+  }
+  .btn-crea:hover {
+    background-color: #1565C0;
+  }
+  .btn-transforma {
+    background-color: #8550CC;
+    color: #fff;
+  }
+  .btn-transforma:hover {
+    background-color: #4A148C;
+  }
+  .card {
+    background-color: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: box-shadow 0.2s;
+  }
+  .card-hover:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  }
+  .section {
+    padding-top: 4.5rem;
+    padding-bottom: 4.5rem;
+  }
+  .container-custom {
+    max-width: 80rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
