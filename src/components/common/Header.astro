@@ -1,0 +1,13 @@
+---
+import Navigation from './Navigation.astro';
+const CTA = { href: '/area-cliente', label: 'Área del cliente' };
+---
+<header class="flex items-center justify-between py-4">
+  <a href="/" class="font-bold text-xl">Avantys</a>
+  <nav>
+    <slot name="nav">
+      <Navigation />
+    </slot>
+  </nav>
+  <a href={CTA.href} class="btn btn-primary">{CTA.label}</a>
+</header>
