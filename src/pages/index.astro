@@ -1,7 +1,12 @@
 ---
-import '../styles/global.css'
+import Layout from '../layouts/Base.astro';
+import NavMega from '../components/NavMega.astro';
+import { MENU } from '../components/menuData';
+const CTA = { href: '/area-cliente', label: 'Área del cliente' };
 ---
-
-<h1 class="text-6xl font-bold text-red-500 text-center mt-10">
-	Hola Avantys 🚀
-</h1>
+<Layout title="Avantys — Hosting y Servidores">
+  <Fragment slot="nav">
+    <NavMega menu={MENU} cta={CTA} />
+  </Fragment>
+  <h1 class="text-6xl font-bold text-red-500 text-center mt-10">Hola Avantys 🚀</h1>
+</Layout>
