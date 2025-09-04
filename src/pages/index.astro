@@ -1,12 +1,15 @@
 ---
-import Layout from '../layouts/Base.astro';
-import NavMega from '../components/NavMega.astro';
-import { MENU } from '../components/menuData';
-const CTA = { href: '/area-cliente', label: 'Área del cliente' };
+import Layout from '@/components/common/Layout.astro';
+import Header from '@/components/common/Header.astro';
+import Footer from '@/components/common/Footer.astro';
+import Hero from '@/components/sections/Hero.astro';
+import Services from '@/components/sections/Services.astro';
+import CTA from '@/components/sections/CTA.astro';
 ---
 <Layout title="Avantys — Hosting y Servidores">
-  <Fragment slot="nav">
-    <NavMega menu={MENU} cta={CTA} />
-  </Fragment>
-  <h1 class="text-6xl font-bold text-red-500 text-center mt-10">Hola Avantys 🚀</h1>
+  <Header slot="nav" />
+  <Hero />
+  <Services />
+  <CTA />
+  <Footer />
 </Layout>
