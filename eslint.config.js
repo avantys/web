@@ -1,26 +1,15 @@
-// eslint.config.js
-import eslint from "@eslint/js";
-import tseslint from "typescript-eslint";
-import astro from "eslint-plugin-astro";
-import astroParser from "astro-eslint-parser";
+import js from '@eslint/js';
+import ts from 'typescript-eslint';
+import astro from 'eslint-plugin-astro';
 
 export default [
-  // Ignorar artefactos
-  { ignores: ["dist/**", "node_modules/**", ".astro/**"] },
-
-  // Reglas base JS
-  eslint.configs.recommended,
-
-  // TypeScript (para .ts/.tsx)
-  ...tseslint.configs.recommended,
-
-  // Astro recomendado
-  ...astro.configs["flat/recommended"],
-
-  // ✅ Forzar parser correcto para .astro y permitir TS dentro
+  js.configs.recommended,
+  ...ts.configs.recommended,
+  ...astro.configs.recommended,
   {
-    files: ["**/*.astro"],
+    files: ['**/*.astro'],
     languageOptions: {
+<<<<<<< HEAD
       parser: astroParser,
       parserOptions: {
         // Usa el parser de TS para <script> en .astro
@@ -48,3 +37,10 @@ export default [
     },
   },
 ];
+=======
+      parser: astro.parser,
+      parserOptions: { parser: ts.parser }
+    }
+  }
+];
+>>>>>>> parent of 17139dc (Merge branch 'main' into codex/configure-seo,-accessibility,-performance-features)

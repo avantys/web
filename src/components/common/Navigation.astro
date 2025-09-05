@@ -1,6 +1,27 @@
 ---
-import NavMega from '../NavMega.astro';
-const { menu, cta } = Astro.props;
+let NavMega;
+try {
+  NavMega = (await import('../NavMega.astro')).default;
+} catch {}
+const links = [
+  { href: '/comienza', label: 'Comienza' },
+  { href: '/crece', label: 'Crece' },
+  { href: '/crea', label: 'Crea' },
+  { href: '/transforma', label: 'Transforma' },
+  { href: '/sobre-avantys', label: 'Sobre Avantys' },
+  { href: '/soporte', label: 'Soporte' },
+  { href: '/contacto', label: 'Contacto' }
+];
+let MENU;
+const CTA = { href: '/area-cliente', label: 'Área del cliente' };
+if (NavMega) {
+  MENU = (await import('../menuData')).MENU;
+}
 ---
-
-<NavMega {menu} {cta} />
+{NavMega ? <NavMega menu={MENU} cta={CTA} /> : (
+  <nav class="flex gap-4">
+    {links.map((l) => (
+      <a href={l.href}>{l.label}</a>
+    ))}
+  </nav>
+)}
