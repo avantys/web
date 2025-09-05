@@ -1,12 +1,9 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-interface Props {
+export interface Props {
   title: string;
-  description: string;
-  canonical?: string;
+  description?: string;
   noindex?: boolean;
-  ogImage?: string;
-  twitterCard?: string;
 }
 const props = Astro.props as Props;
 ---

@@ -1,29 +1,9 @@
 @import "tailwindcss";
 
-@font-face {
-  font-family: "Museo Sans";
-  src: local("Museo Sans"), local("Arial");
-  font-display: swap;
-}
-
 @layer base {
   body {
     font-family: "Museo Sans", system-ui, sans-serif;
     color: #002040;
-  }
-
-  .skip-link {
-    position: absolute;
-    top: -40px;
-    left: 0;
-    background: #000;
-    color: #fff;
-    padding: 0.5rem 1rem;
-    z-index: 100;
-  }
-
-  .skip-link:focus {
-    top: 0;
   }
 }
 
@@ -104,14 +84,5 @@
     margin-right: auto;
     padding-left: 1rem;
     padding-right: 1rem;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation: none !important;
-    transition: none !important;
   }
 }
