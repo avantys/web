@@ -1,6 +1,7 @@
 ---
-import NavMega from '../NavMega.astro';
+import NavMega from '../NavMega';
 const { menu, cta } = Astro.props;
 ---
 
-<NavMega {menu} {cta} />
+{menu && cta && <NavMega {menu} {cta} />}
+
